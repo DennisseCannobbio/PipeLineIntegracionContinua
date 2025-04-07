@@ -18,6 +18,15 @@ pipeline {
             steps {
                 sh 'npm test'
             }
+            post {
+                success {
+                    echo 'Tests passed successfully!'
+                }
+                failure {
+                    echo 'Tests failed! Check the test results for more information.'
+                    error 'Test stage failed'
+                }
+            }
         }
         
         stage('Start Server') {
@@ -38,7 +47,11 @@ pipeline {
     
     post {
         always {
-            junit '**/junit.xml'
+            junit 'test-results/*.xml' 
+            
+            sh 'echo "Pipeline executed at $(date)" > pipeline-report.txt'
+            sh 'echo "Test results: $PIPELINE_RESULT" >> pipeline-report.txt'
+            archiveArtifacts artifacts: 'pipeline-report.txt', fingerprint: true
         }
     }
 }
