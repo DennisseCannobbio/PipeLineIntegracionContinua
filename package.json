@@ -2,8 +2,10 @@
 {
   "name": "ci_pipeline_project",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
+    "dev": "json-server --watch db.json --port 3000",
     "test": "jest"
   },
   "dependencies": {
